@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>表爱网DEMO_1</title>
+</head>
+<style>
+
+  /*basic reset*/
+  * {margin: 0; padding: 0;}
+  body {text-align: center; overflow: hidden;}
+
+  .grid {
+    width: 600px; height: 500px; margin: 50px auto 50px auto;
+    perspective: 500px; /*For 3d*/
+  }
+  .grid img {width: 60px; height: 60px;}
+
+  .animate {
+    font: 12px Montserrat; text-transform: uppercase;
+    background: rgb(0, 100, 0); color: white;
+    padding: 10px 20px; border-radius: 5px;
+    cursor: pointer;
+  }
+  .animate:hover {background: rgb(0, 75, 0);}
+</style>
+<body style='min-width: 600px;'>
+
+<!-- original by http://thecodeplayer.com -->
+<div class="grid"></div>
+<span class="animate">动一下</span>
+
+<script src='../../static/js/jquery.min.js'></script>
+<script src='../../static/js/jquery.easing.min.js'></script>
+
+<div style="text-align:center;clear:both;margin-top:30px">
+
+</div>
+</body>
+<script>
+
+    var d = 0; //delay
+    var ry, tz, s; //transform params
+
+    //animation time
+    $(".animate").on("click", function(){
+        //fading out the thumbnails with style
+        $("img").each(function(){
+            d = Math.random()*1000; //1ms to 1000ms delay
+            $(this).delay(d).animate({opacity: 0}, {
+                //while the thumbnails are fading out, we will use the step function to apply some transforms. variable n will give the current opacity in the animation.
+                step: function(n){
+                    s = 1-n; //scale - will animate from 0 to 1
+                    $(this).css("transform", "scale("+s+")");
+                    // console.log(n)
+                },
+                duration: 1000,
+            })
+        }).promise().done(function(){
+            //after *promising* and *doing* the fadeout animation we will bring the images back
+            storm();
+        })
+    })
+    $(document).ready(function () {
+
+                    var array=["../../static/client/admin/demo_1/1.jpg",
+                        "../../static/client/admin/demo_1/2.jpg",
+                        "../../static/client/admin/demo_1/3.jpg",
+                        "../../static/client/admin/demo_1/4.jpg",
+                        "../../static/client/admin/demo_1/5.jpg",
+                        "../../static/client/admin/demo_1/6.jpg",
+                        "../../static/client/admin/demo_1/7.jpg",
+                        "../../static/client/admin/demo_1/8.jpg",
+                        "../../static/client/admin/demo_1/9.jpg"]
+                  var array_length=array.length
+                    if(array_length<=0){
+                        alert("暂无图片！")
+                        return}
+                    //Creating 50 thumbnails inside .grid
+                    //the images are stored on the server serially. So we can use a loop to generate the HTML.
+                    var images = "", count = 71;
+                    for(var i = 1; i <= count; i++)
+                    {
+// ||i==73||i==72||i==71||i==70||i==76||i==77||i==78||i==79||i==74||i==75
+                        if(i==10||i==1||i==5||i==6||i==31||i==42||i==49||i==40||i==41||i==51||i==53||i==50||i==52||i==64||i==58||i==59||i==63||i==62||i==61||i==60||i==70||i==67||i==68||i==69){
+                            images+="<div id=addDiv"+i+" style='width: 60px;height: 60px;display: inline-block;'></div>"
+                        }else{
+                            // images += '<img src="../../static/client/admin/test.png'+i+'.jpg" />';
+                            images += '<img src="'+array[Math.floor(Math.random()*array_length)]+'" />';
+                        }
+                    }
+                    //appending the images to .grid
+                    $(".grid").append(images);
+
+
+    })
+    //bringing back the images with style
+    function storm()
+    {
+        $("img").each(function(){
+            d = Math.random()*1000;
+            $(this).delay(d).animate({opacity: 1}, {
+                step: function(n){
+                    //rotating the images on the Y axis from 360deg to 0deg
+                    ry = (1-n)*360;
+                    //translating the images from 1000px to 0px
+                    tz = (1-n)*1000;
+                    //applying the transformation
+                    $(this).css("transform", "rotateY("+ry+"deg) translateZ("+tz+"px)");
+                },
+                duration: 3000,
+                //some easing fun. Comes from the jquery easing plugin.
+                easing: 'easeOutQuint',
+            })
+        })
+    }
+
+
+
+
+
+</script>
+</html>

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">    <meta charset="UTF-8">
+    <title>欢迎注册!</title>
+    <link rel="stylesheet" type="text/css" href="../../static/css/normal.css">
+    <script src="../../static/js/normal.js" ></script>
+
+    <script src="../../static/js/jquery.min.js"></script>
+    <script src="../../static/js/vue.min.js"></script>
+    <script src="../../static/js/axios.min.js"></script>
+</head>
+<style>
+    *{
+        /*font-size: 20px;*/
+        margin: 0;
+        padding: 0;
+    }
+    span{
+        margin: 5px;
+        float: left;
+    }
+    input{
+        padding: 5px;
+        margin: 5px;
+    }
+    /*@media all and (max-width:246px){*/
+        /*#content{text-align: left;*/
+            /*width: 165px;}*/
+    /*}*/
+    @media all and (max-height:500px){
+        footer{display:none;}
+    }
+    #changeForm{
+        cursor: pointer;
+        float: none;
+    }
+    #RegisterContent{
+        display: none;
+    }
+    @media all and (max-width:400px){
+        #LoginContent,#RegisterContent{
+            width:300px;
+        }
+    }
+    #LoginContent,#RegisterContent{
+        text-align: right;width:250px;position: relative;left: 0;right: 0;
+        margin: auto;
+    }
+</style>
+<body style="background-color: #2f2e2d;text-align: center;">
+<!--头部-->
+<header style="width: 100%;height: 75px;background:#eeeeee;text-align: left">
+    <img style="position: relative;height: 75px;margin-left: 15%;" alt="" src="../../static/pic/logo.png"/>
+</header>
+<!--内容-->
+<div id="Form" style="color: #dddddd;position: absolute;left: 0%;right: 0%;top:50%;margin: 0 auto;width:100%;height: 200px;margin-top: -100px;">
+    <h3 id="header-message">登录信息</h3>
+    <div id="RegisterContent" >
+        <span>邮箱:</span><input type="text" maxlength="40" v-model="mail" placeholder="输入你的邮箱地址!" /><br/>
+        <span>姓名:</span><input type="text" maxlength="10" v-model="name"  placeholder="输入你的姓名!" /><br/>
+   <span> 验证码:</span><input style="width: 107px;" v-model="code" type="text"/><img @click="sendCode" style="float: right;" src="../../static/pic/send.png"/><br/>
+    <span>密码:</span><input type="password" v-model="password" maxlength="20" /><br/>
+    <span >再确定一次:</span><input type="password" v-model="checkPassword" maxlength="20" /><br/>
+    </div>
+    <div id="LoginContent" >
+        <span>邮箱:</span><input type="text" maxlength="40" v-model="Login_mail" placeholder="输入你的邮箱地址!" /><br/>
+        <span>密码:</span><input type="password" v-model="Login_password" maxlength="20" /><br/>
+    </div>
+    <button id="CheckButton" style="color:darksalmon;width: 140px;height: 30px;border-radius: 3%;
+margin: 10px;" @click="register">登录</button><br/>
+    <span id="changeForm">还没有账号?点这里</span>
+    <div style="width: 100px; height: 100px;  border-radius: 100px 0px 0px; margin: auto; transform: rotate(45deg); position: relative; left: 0px; right: 0px; bottom: 0px; opacity: 1; filter: blur(3px);background-image: radial-gradient(#edd3b1,transparent);"></div>
+    <img style="margin: 0px;" src="../../static/pic/flashlight.png">
+</div>
+<!--提示-->
+
+<div id="tipword" ><!--提示框-->
+    <div style="background:
+#ffce15;border-bottom-left-radius: 0;border-bottom-right-radius: 0;"><img width="75px" src="../../static/pic/logo.png">
+       </div><br><br><br>
+
+    <div id="center_word" ></div>
+    <br>
+    <input type="button" id="sure" onclick="closetip()" value="确认"></input><br><br></div>
+<div id="tipbackground" onclick="closetip()" ></div>
+
+<!--提示-->
+<!--尾部-->
+<footer style="color:white;bottom: 0;right: 0;position: absolute;left: 0;margin: 0 auto;margin-bottom: -150px;">个人网站©2020<a style="color: white;text-decoration-line:none;" href="http://beian.miit.gov.cn" target="_blank">粤ICP备20011030号</a></footer>
+</body>
+<script>
+    // var GoIndex=location.href.lastIndexOf("?Location")
+    // console.log(location.href.substr(GoIndex+10))
+
+
+    var vm= new Vue({
+        el:'#Form',
+        data:{
+            mail:"",
+            code:"",
+            name:"",
+            password:"",
+            checkPassword:"",
+            status:false,
+            count:0,
+            Login_mail:"",
+            Login_password:""
+            // show:'发送验证码'
+        },
+        methods:{
+            goIndex:function(){
+                if(location.href.lastIndexOf("?Location")!=-1){
+                    var GoIndex=location.href.lastIndexOf("?Location")
+                    location.href="../"+location.href.substr(GoIndex+10)
+                }else{
+                    location.href="../"
+                }
+
+            },
+            mailFormat:function(){
+                var a=/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
+                if(!a.test(vm.mail)){
+                    return false;
+                }return true;
+            },
+            register:function(){/*成功跳转，数据传给后端写入数据库*/
+                if($("#header-message").html()=="登录信息"){
+                    $.post("/ClientLogin",{email:vm.Login_mail,password:vm.Login_password},function (data) {
+                        if(data.status=="OK"){
+                            tip("登录成功！将在3s内跳转")
+                            setTimeout(vm.goIndex,3000)
+                        }else{
+                            tip("账号或者密码错误！")
+                        }
+                    })
+                    return
+                }
+
+                if(vm.password!=vm.checkPassword){
+                    tip("两次密码不一致!")
+                    return ;
+                }if(vm.password.trim()==""){
+                    tip("密码为空!")
+                    return ;
+                }
+                if(vm.code.trim()==""){
+                    tip("请填写验证码!")
+                    return ;
+                }
+                axios
+                    .post( '/checkMail',{"mail":vm.mail} )
+                    .then(function (value) { //axios返回json数据
+                        console.log(value.data.status!="OK")
+                        if(value.data.status!="OK"){
+                            alert("邮箱已经存在!")
+                            return ;
+                        }else{
+                            axios.post('/RegisterUser_getCode',{"mail":vm.mail,"code":vm.code,"name":vm.name,"password":vm.password})
+                                .then(function(data){
+                                    console.log(data.data.status)
+                                    if(data.data.status=="OK"){
+                                        tip("恭喜您，注册成功！正在为你登录...")
+                                        $.post("/ClientLogin",{email:vm.mail,password:vm.password},function (data) {
+                                            if(data.status=="OK"){
+                                                alert("登录成功！将在3s内跳转")
+                                                setTimeout(vm.goIndex,3000)
+                                            }
+                                        })
+
+                                    }else{
+                                        tip("信息错误！");
+                                    }
+
+                                });
+                        }
+                    })
+                    .catch( function ( error ) {
+                        tip("服务出错，请联系管理员！");
+                    } );
+            },
+            sendCode:function(){ /*发送验证码*/
+               if(!vm.mailFormat()){
+                   tip("邮箱格式错误！")
+                   return ;
+               }
+               if(vm.name.trim()==""){
+                   tip("姓名信息缺失!")
+                   return ;
+               }
+
+                axios
+                    .post( '/checkMail',{"mail":vm.mail} )
+                    .then(function (value) { //axios返回json数据
+                        console.log(value.data.status!="OK")
+                        if(value.data.status!="OK"){
+                            alert("邮箱已经存在!")
+                            return ;
+                        }else{
+                            if(vm.count<=0){
+                                vm.count=60
+                                axios.post('/RegisterUser_setCode',{"mail":vm.mail,"name":vm.name})
+                                    .then(function (value){//后台返回json
+                                        vm.sentcode=value.data.back
+                                        tip("已发送至您的邮箱，请查收！");
+                                        var go=setInterval(function(){
+                                            vm.count-=1;
+                                            if(vm.count<=0)
+                                            {
+                                                clearInterval(go);}
+                                        },1000);
+                                    })
+                                    .catch(function(error){
+                                        tip("服务出错，请联系管理员！");
+                                        console.log(error)});
+                            }else{
+                                tip("已发送请查看邮箱,再发送请等"+vm.count+'s!');
+                            }
+                        }
+                    })
+                    .catch( function ( error ) {
+                        tip("服务出错，请联系管理员！");
+                    } );
+
+            }
+        }
+
+    });
+    $(document).ready(function () {
+        $("#HeaderLogo").click(function () {
+            location.href='../'
+        })
+        $("#changeForm").click(function () {
+            if($("#header-message").html()=="登录信息"){
+                $("#header-message").html("注册信息")
+                $("#CheckButton").html("注册")
+                $("#changeForm").html("已有账号?点这里")
+                $("#LoginContent").css("display","none")
+                $("#RegisterContent").css("display","block")
+            }else{
+                $("#header-message").html("登录信息")
+                $("#CheckButton").html("登录")
+                $("#changeForm").html("还没有账号?点这里")
+                $("#RegisterContent").css("display","none")
+                $("#LoginContent").css("display","block")
+            }
+
+        })
+    })
+</script>
+</html>

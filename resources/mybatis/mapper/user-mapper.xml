@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bo.express_love.repository.UserMapper">
+
+    <select id="selectUser" resultType="User">
+        select * from user
+        <where>
+            <if test="name!=null">
+              and  name like   concat('%',#{name},'%')
+            </if>
+        </where>
+    </select>
+    <insert id="insertUser" parameterType="User">
+        insert user(id,name,email,password) values (null,#{name},#{email},#{password})
+    </insert>
+    <update id="updateUser" parameterType="map">
+        update user
+        <set >
+            <if test="New_email!=null">
+              email=#{New_email},
+            </if>
+            <if test="name!=null">
+                name=#{name},
+            </if>
+            <if test="password!=null">
+                password=#{password},
+            </if>
+        </set>
+        where email=#{Old_email}
+    </update>
+    <select id="selectUserByEmail" resultType="User">
+        select * from user where email=#{email}
+    </select>
+
+</mapper>

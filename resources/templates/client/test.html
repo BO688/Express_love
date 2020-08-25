@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv='Pragma' content='no-cache' />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>表爱网DEMO_2</title>
+    <script src="../../static/demo_2/jquery.min.js" ></script>
+    <link rel="stylesheet" href="../../static/demo_2/all.min.css" >
+
+    <style>
+        .login_content{
+            position: fixed;
+            z-index: 102;
+            top: 50%;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            width: 300px;
+            height: 150px;
+            margin-top: -75px;
+            text-align: center;
+        }
+        .login_content input,.login_content button,.login_content span{
+            position: relative;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .login_bg {
+            background-color:#c6c3c3;
+            width: 100%;
+            height: 100%;
+            z-index: 1001;
+            position: fixed;
+        }
+    </style>
+</head>
+<body style="perspective: 500px">
+
+<span class="nolike" style="position: fixed;
+right: 5%;
+z-index: 101;
+top: 5%;"><img style="cursor: pointer" src="../../static/pic/nolike.png"></span>
+<span class="like" style="position: fixed;
+right: 5%;
+z-index: 101;
+top: 12%;"><img style="cursor: pointer;width: 48px" src="../../static/pic/like.png"></span>
+<!--<span id="Success_word_div" style="    z-index: 1010;-->
+<!--display: none;-->
+<!--position: fixed;-->
+<!--top: 0;-->
+<!--bottom: 0;-->
+<!--margin: auto;-->
+<!--left: 0;-->
+<!--right: 0;-->
+<!--width: 180px;-->
+<!--height: 100px;-->
+<!--font-size: 18px;-->
+<!--text-align: center;">-->
+<!--</span>-->
+
+<div class="login_bg">
+    <div class="login_content">
+        <span>邮箱账号</span><input id="login_account"  type="text"/>
+        <span>密码</span><input id="login_password" type="password"/>
+        <button id="login_button">进入</button>
+        <span id="login_message"></span>
+    </div>
+</div>
+<div class="flowtime">
+    <div class="ft-section section-1" data-id="section-1">
+        <div id="/section-1/page-1" class="ft-page page-1" data-id="page-1">
+            <p class="text1"><span class="me" contenteditable="true">XX</span> ❤ <span class="you" contenteditable="true">XX</span> <span id="text-77" contenteditable="true">一生一世</span></p>
+            <p class="text2">按键盘 "↓" <span id="text-1" contenteditable="true">开始倾听浪漫表白</span></p>
+        </div>
+        <div id="/section-1/page-2" class="ft-page page-2" data-id="page-2">
+            <p class="top-text" id="text-2" contenteditable="true">过去的<span class="me" contenteditable="true">XX</span>一直是一个人生活，享受着孤独，也憧憬着爱情。</p>
+            <img id="pic-1" src="../../static/demo_2/img/iali63.jpg" tppabs="img/iali63.jpg" alt="过去的XX一直是一个人生活，享受着孤独，也憧憬着爱情。" />
+        </div>
+        <div id="/section-1/page-3" class="ft-page page-3 left-img" data-id="page-3">
+            <h2 class="text" id="text-3" contenteditable="true">一个人的长廊</h2>
+            <img src="../../static/demo_2/img/iali35.jpg" tppabs="img/iali35.jpg" alt="一个人的长廊"/>
+        </div>
+        <div id="/section-1/page-4" class="ft-page page-4 full-img" data-id="page-4">
+            <h2 class="center-text" id="text-4" contenteditable="true">一个人的山岗</h2>
+            <img src="../../static/demo_2/img/iali6.jpg" tppabs="img/iali6.jpg" alt="一个人的山岗" />
+        </div>
+    </div>
+    <div class="ft-section section-2" data-id="section-2">
+        <div id="/section-2/page-1" class="ft-page page-5 full-img" data-id="page-1">
+            <h2 class="center-text" id="text-5" contenteditable="true">一个人的地铁</h2>
+            <img src="../../static/demo_2/img/iali19.jpg" tppabs="img/iali19.jpg" alt="一个人的地铁" />
+        </div>
+        <div id="/section-2/page-2" class="ft-page page-6" data-id="page-2">
+            <h2 class="center-text" id="text-6" contenteditable="true">一个人的游乐场</h2>
+            <img src="../../static/demo_2/img/iali29.jpg" tppabs="img/iali29.jpg" alt="一个人的游乐场"/>
+        </div>
+        <div id="/section-2/page-3" class="ft-page page-7" data-id="page-3">
+            <h3 id="text-7" contenteditable="true">但Ta依然乐观，微笑着，等待着</h3>
+            <img src="../../static/demo_2/img/iali60.jpg" tppabs="img/iali60.jpg" alt="但Ta依然乐观，微笑着，等待着"/>
+        </div>
+        <div id="/section-2/page-4" class="ft-page page-8 full-img" data-id="page-4">
+            <h3 id="text-8" contenteditable="true">生活难免有风风雨雨</h3>
+            <img src="../../static/demo_2/img/iali51.jpg" tppabs="img/iali51.jpg" alt="生活难免有风风雨雨" />
+        </div>
+        <div id="/section-2/page-5" class="ft-page page-9" data-id="page-5">
+            <h3 id="text-9" contenteditable="true">Ta总是能够轻松的应对</h3>
+            <img src="../../static/demo_2/img/iali5.jpg" tppabs="img/iali5.jpg" />
+        </div>
+        <div id="/section-2/page-6" class="ft-page page-10" data-id="page-6">
+            <h3 id="text-10" contenteditable="true">并且面带阳光、自信的笑容</h3>
+            <img src="../../static/demo_2/img/iali22.jpg" tppabs="img/iali22.jpg" />
+        </div>
+    </div>
+    <div class="ft-section section-3" data-id="section-3">
+        <div id="/section-3/page-1" class="ft-page page-11 full-img" data-id="page-1">
+            <h3 id="text-11" contenteditable="true">生活也不会总是一帆风顺</h3>
+            <img src="../../static/demo_2/img/iali24.jpg" tppabs="img/iali24.jpg"  />
+        </div>
+        <div id="/section-3/page-2" class="ft-page page-12" data-id="page-2">
+            <h3><span id="text-12" contenteditable="true">但Ta每次都能勇敢的面对</span></h3>
+            <img src="../../static/demo_2/img/iali25.jpg" tppabs="img/iali25.jpg" />
+        </div>
+        <div id="/section-3/page-3" class="ft-page page-13" data-id="page-3">
+            <img src="../../static/demo_2/img/iali64.jpg" tppabs="img/iali64.jpg" alt='可是小明的爱情又在哪里呢？' />
+            <h3 id="text-13" contenteditable="true">可是Ta的爱情又在哪里呢？</h3>
+        </div>
+        <div id="/section-3/page-4" class="ft-page page-14 left-img" data-id="page-4">
+            <h3 id="text-14" contenteditable="true">在镜子里面吗？Ta不敢相信</h3>
+            <img src="../../static/demo_2/img/iali46.jpg" tppabs="img/iali46.jpg" />
+        </div>
+        <div id="/section-3/page-5" class="ft-page page-15 left-img" data-id="page-5">
+            <h3><span id="text-15" contenteditable="true">Ta去问大树，我的爱情在哪里？</span></h3>
+            <img src="../../static/demo_2/img/iali45.jpg" tppabs="img/iali45.jpg" />
+        </div>
+        <div id="/section-3/page-6" class="ft-page page-16 left-img" data-id="page-6">
+            <h3><span id="text-16" contenteditable="true">于是，Ta一个人继续向前走</span></h3>
+            <img src="../../static/demo_2/img/iali66.jpg" tppabs="img/iali66.jpg" />
+        </div>
+        <div id="/section-3/page-7" class="ft-page page-17 top-text" data-id="page-7">
+            <h3 id="text-17" contenteditable="true">直到有一天遇见了你</h3>
+            <img src="../../static/demo_2/img/iali16.jpg" tppabs="img/iali16.jpg" />
+        </div>
+    </div>
+    <div class="ft-section section-4" data-id="section-4">
+        <div id="/section-4/page-1" class="ft-page page-18 full-img" data-id="page-1">
+            <p class="text" id="text-18" contenteditable="true"><span class="me" contenteditable="true">XX</span>喜欢<span class="you" contenteditable="true">XX</span>，非常非常的喜欢，因为<span class="you" contenteditable="true">XX</span>的出现，<span class="me" contenteditable="true">XX</span>脸上有了更加灿烂的笑容</p>
+            <img src="../../static/demo_2/img/iali11.jpg" tppabs="img/iali11.jpg"  />
+        </div>
+        <div id="/section-4/page-2" class="ft-page page-19" data-id="page-2">
+            <h3 id="text-19" contenteditable="true">可是<span class="you" contenteditable="true">XX</span>会喜欢<span class="me" contenteditable="true">XX</span>吗？</h3>
+            <img src="../../static/demo_2/img/iali75.jpg" tppabs="img/iali75.jpg" />
+        </div>
+        <div id="/section-4/page-3" class="ft-page page-20" data-id="page-3">
+            <img src="../../static/demo_2/img/iali59.png" tppabs="img/iali59.png" />
+            <h3 id="text-20" contenteditable="true"><span class="me" contenteditable="true">XX</span>想。。。</h3>
+            <img src="../../static/demo_2/img/iali9.jpg" tppabs="img/iali9.jpg" />
+        </div>
+        <div id="/section-4/page-4" class="ft-page page-21" data-id="page-4">
+            <h3 id="text-21" contenteditable="true"><span class="me" contenteditable="true">XX</span>想和<span class="you" contenteditable="true">XX</span>在一起</h3>
+            <img src="../../static/demo_2/img/iali59.png" tppabs="img/iali59.png" />
+        </div>
+        <div id="/section-4/page-5" class="ft-page page-22 left-img" data-id="page-5">
+            <h3 id="text-22" contenteditable="true"><span class="me" contenteditable="true">XX</span>会经常去找<span class="you" contenteditable="true">XX</span></h3>
+            <img src="../../static/demo_2/img/iali4.jpg" tppabs="img/iali4.jpg" />
+        </div>
+        <div id="/section-4/page-6" class="ft-page page-23 left-img" data-id="page-6">
+            <h3 id="text-23" contenteditable="true">然后两个人一起出去玩</h3>
+            <img src="../../static/demo_2/img/iali44.jpg" tppabs="img/iali44.jpg" />
+        </div>
+        <div id="/section-4/page-7" class="ft-page page-24 full-img" data-id="page-7">
+            <h3 id="text-24" contenteditable="true">晚上<span class="me" contenteditable="true">XX</span>会把<span class="you" contenteditable="true">XX</span>送回家</h3>
+            <img src="../../static/demo_2/img/iali32.jpg" tppabs="img/iali32.jpg" />
+        </div>
+    </div>
+    <div class="ft-section section-5" data-id="section-5">
+        <div id="/section-5/page-1" class="ft-page page-25 left-img" data-id="page-1">
+            <h3><span id="text-25" contenteditable="true">直到很晚</span></h3>
+            <img src="../../static/demo_2/img/iali37.jpg" tppabs="img/iali37.jpg" />
+        </div>
+        <div id="/section-5/page-2" class="ft-page page-26 top-text" data-id="page-2">
+            <h3 id="text-26" contenteditable="true">然后高兴地进入梦乡，在梦中还会和<span class="you" contenteditable="true">XX</span>在一起</h3>
+            <img src="../../static/demo_2/img/iali10.gif" tppabs="img/iali10.gif" />
+        </div>
+        <div id="/section-5/page-3" class="ft-page page-27" data-id="page-3">
+            <h3 id="text-27" contenteditable="true"><span class="me" contenteditable="true">XX</span>想成为了<span class="you" contenteditable="true">XX</span>的逛街助手</h3>
+            <img src="../../static/demo_2/img/iali67.jpg" tppabs="img/iali67.jpg"  />
+        </div>
+        <div id="/section-5/page-4" class="ft-page page-28" data-id="page-4">
+            <h3 id="text-28" contenteditable="true">然后，<span class="me" contenteditable="true">XX</span>和<span class="you" contenteditable="true">XX</span>一起去很多地方玩</h3>
+            <img src="../../static/demo_2/img/iali40.jpg" tppabs="img/iali40.jpg" />
+        </div>
+        <div id="/section-5/page-5" class="ft-page page-29" data-id="page-5">
+            <h3 id="text-29" contenteditable="true"><span class="me" contenteditable="true">XX</span>也想和<span class="you" contenteditable="true">XX</span>一块成为一对吃货</h3>
+            <img src="../../static/demo_2/img/iali12.jpg" tppabs="img/iali12.jpg" />
+        </div>
+        <div id="/section-5/page-6" class="ft-page page-30" data-id="page-6">
+            <h3 id="text-30" contenteditable="true">再然后，Ta们会搬到了一起</h3>
+            <img src="../../static/demo_2/img/iali76.gif" tppabs="img/iali76.gif" />
+        </div>
+        <div id="/section-5/page-7" class="ft-page page-31" data-id="page-7">
+            <h3 id="text-31" contenteditable="true">再然后，<span class="me" contenteditable="true">XX</span>会开始学习她的技能</h3>
+            <img src="../../static/demo_2/img/iali77.jpg" tppabs="img/iali77.jpg" />
+        </div>
+    </div>
+    <div class="ft-section section-6" data-id="section-6">
+        <div id="/section-6/page-1" class="ft-page page-32" data-id="page-1">
+            <h3 id="text-32" contenteditable="true">煮饭</h3>
+            <img src="../../static/demo_2/img/iali62.jpg" tppabs="img/iali62.jpg"  />
+        </div>
+        <div id="/section-6/page-2" class="ft-page page-33 top-text" data-id="page-2">
+            <h3 id="text-33" contenteditable="true">那时候，每天早上，Ta们吃着自己做的美食</h3>
+            <img src="../../static/demo_2/img/iali3.jpg" tppabs="img/iali3.jpg" />
+        </div>
+        <div id="/section-6/page-3" class="ft-page page-34 left-img" data-id="page-3">
+            <h3 id="text-34" contenteditable="true">然后在同一个站台，高高兴兴的一起上班</h3>
+        </div>
+        <div id="/section-6/page-4" class="ft-page page-35" data-id="page-4">
+            <h3><span id="text-35" contenteditable="true"><span class="me" contenteditable="true">XX</span>会感觉自己好幸福。</span></h3>
+            <img src="../../static/demo_2/img/iali8.gif" tppabs="img/iali8.gif" />
+        </div>
+        <div id="/section-6/page-5" class="ft-page page-36 full-img" data-id="page-5">
+            <h3 id="text-36" contenteditable="true">Ta们可能偶尔也会吵架</h3>
+            <img src="../../static/demo_2/img/iali31.jpg" tppabs="img/iali31.jpg" />
+        </div>
+        <div id="/section-6/page-6" class="ft-page page-37 left-img" data-id="page-6">
+            <h3 id="text-37" contenteditable="true"><span class="me" contenteditable="true">XX</span>不想这样</h3>
+            <img src="../../static/demo_2/img/iali49.jpg" tppabs="img/iali49.jpg" />
+        </div>
+        <div id="/section-6/page-7" class="ft-page page-38 bottom-text" data-id="page-7">
+            <img src="../../static/demo_2/img/iali21.jpg" tppabs="img/iali21.jpg" />
+            <h3 id="text-38" contenteditable="true">一定是我有什么做的不对，<span class="me" contenteditable="true">XX</span>会这么想</h3>
+        </div>
+    </div>
+    <div class="ft-section section-7" data-id="section-7">
+        <div id="/section-7/page-1" class="ft-page page-39 left-img" data-id="page-1">
+            <h3 id="text-39" contenteditable="true">如果没有<span class="you" contenteditable="true">XX</span>在身边，窗外就没有风景</h3>
+            <img src="../../static/demo_2/img/iali2.jpg" tppabs="img/iali2.jpg" />
+        </div>
+        <div id="/section-7/page-2" class="ft-page page-40" data-id="page-2">
+            <h3 id="text-40" contenteditable="true">如果没有<span class="you" contenteditable="true">XX</span>在身后</h3>
+            <img src="../../static/demo_2/img/iali14.jpg" tppabs="img/iali14.jpg"  />
+        </div>
+        <div id="/section-7/page-3" class="ft-page page-41" data-id="page-3">
+            <img src="../../static/demo_2/img/iali30_1.jpg" tppabs="img/iali30_1.jpg" class='img1'/>
+            <img src="../../static/demo_2/img/iali30_2.jpg" tppabs="img/iali30_2.jpg" class='img2'/>
+            <h3 id="text-41" contenteditable="true"> <span class="me" contenteditable="true">XX</span>又怎会飞的更高更远</h3>
+        </div>
+        <div id="/section-7/page-4" class="ft-page page-42" data-id="page-4">
+            <h3><span id="text-42" contenteditable="true"><span class="me" contenteditable="true">XX</span>不想这样。Ta要为<span class="you" contenteditable="true">XX</span>改变自己</span></h3>
+            <img src="../../static/demo_2/img/iali69.jpg" tppabs="img/iali69.jpg"  />
+        </div>
+        <div id="/section-7/page-5" class="ft-page page-43" data-id="page-5">
+            <img src="../../static/demo_2/img/iali42.jpg" tppabs="img/iali42.jpg" />
+            <h3 id="text-43" contenteditable="true">我愿意一直陪伴着你</h3>
+        </div>
+        <div id="/section-7/page-6" class="ft-page page-44 left-img" data-id="page-6">
+            <h3><span id="text-44" contenteditable="true">爱情就像花草一样</span></h3>
+            <img src="../../static/demo_2/img/iali0.jpg" tppabs="img/iali0.jpg" />
+        </div>
+        <div id="/section-7/page-7" class="ft-page page-45 left-img" data-id="page-7">
+            <h3><span id="text-45" contenteditable="true">直到一天，<span class="me" contenteditable="true">XX</span>不想让自己后悔</span></h3>
+            <img src="../../static/demo_2/img/iali18.jpg" tppabs="img/iali18.jpg" />
+        </div>
+    </div>
+    <div class="ft-section section-8" data-id="section-8">
+        <div id="/section-8/page-1" class="ft-page page-46" data-id="page-1">
+            <img src="../../static/demo_2/img/iali57.gif" tppabs="img/iali57.gif" />
+            <h3>
+                <span id="text-46" contenteditable="true">看着惊喜一点点准备好了</span>
+            </h3>
+        </div>
+        <div id="/section-8/page-2" class="ft-page page-47 top-text" data-id="page-2">
+            <img src="../../static/demo_2/img/iali58.jpg" tppabs="img/iali58.jpg" />
+            <h3>
+                <span id="text-47" contenteditable="true">想想未来Ta们或许</span>
+            </h3>
+
+        </div>
+        <div id="/section-8/page-3" class="ft-page page-48 left-img" data-id="page-3">
+            <p><span id="text-48" contenteditable="true"><span class="me" contenteditable="true">XX</span>也会继续努力</span></p>
+            <img src="../../static/demo_2/img/iali65.jpg" tppabs="img/iali65.jpg"  />
+        </div>
+        <div id="/section-8/page-4" class="ft-page page-49 full-img" data-id="page-4">
+            <img src="../../static/demo_2/img/iali71.jpg" tppabs="img/iali71.jpg" />
+            <p class="text">
+                <span class='text' id="text-49" contenteditable="true"><span class="me" contenteditable="true">XX</span>很幸福，因为Ta遇到了<span class="you" contenteditable="true">XX</span>。Ta相信后面的每天都会是快乐的</span><br />
+            </p>
+        </div>
+        <div id="/section-8/page-5" class="ft-page page-50" data-id="page-5">
+            <p class='text' id="text-50" contenteditable="true"><span class="me" contenteditable="true">XX</span>想和<span class="you" contenteditable="true">XX</span>一起过幸福的生活</p>
+            <img src="../../static/demo_2/img/iali50_1.jpg" tppabs="img/iali50_1.jpg" class='img1' />
+            <img src="../../static/demo_2/img/iali50_2.jpg" tppabs="img/iali50_2.jpg" class='img2' />
+        </div>
+        <div id="/section-8/page-6" class="ft-page page-51" data-id="page-6">
+            <p>
+                <span id="text-51" contenteditable="true">永远有多远？</span><br />
+            </p>
+        </div>
+    </div>
+    <div class="ft-section section-9" data-id="section-9">
+        <div id="/section-9/page-1" class="ft-page page-52 full-img" data-id="page-1">
+            <h3 id="text-52" contenteditable="true">如果三年后你注定是我女朋友，你何不提早行使你的权利</h3>
+            <img src="../../static/demo_2/img/iali20.jpg" tppabs="img/iali20.jpg"  />
+        </div>
+        <div id="/section-9/page-2" class="ft-page page-53" data-id="page-2">
+            <img src="../../static/demo_2/img/iali68.jpg" tppabs="img/iali68.jpg" alt='happy birthday' />
+            <h3 id="text-53" contenteditable="true">我爱你</h3>
+        </div>
+        <div id="/section-9/page-3" class="ft-page page-54 center-img" data-id="page-3" >
+            <div class="center-img" id="text-54">I love you</div>
+        </div>
+        <div id="/section-9/page-4" class="ft-page page-55 right-img" data-id="page-4">
+            <img src="../../static/demo_2/img/14915.jpg" tppabs="img/14915.jpg" />
+            <p class="text">
+                <span id="text-55" contenteditable="true">我相信，<span class="me" contenteditable="true">XX</span>和<span class="you" contenteditable="true">XX</span>的故事会一直继续下去。</span><br />
+                <br />
+                <br />
+                <span> -- 按“Esc"键有惊喜</span>
+            </p>
+        </div>
+    </div>
+</div>
+<div class="nojavascript">您的浏览器禁用了javascript，无法正常浏览本页面</div>
+<audio id="bgmMusic" src="../../static/demo_2/lovebgm.mp3" autoplay="autoplay" loop preload="auto" type="audio/mp3"></audio>
+
+<script src="../../static/demo_2/all.min.js" ></script>
+<script src="../../static/demo_2/love.min.js" ></script>
+<div class="mPower"><span id="on" title="点击暂停" style=""></span><span id="off" title="点击播放"  style=""></span></div>
+</body>
+<script>
+
+    $(".nolike").on("click", function(){
+        //fading out the thumbnails with style
+        $("div").each(function(){
+            d = Math.random()*1000; //1ms to 1000ms delay
+            $(this).delay(d).animate({opacity: 0}, {
+                //while the thumbnails are fading out, we will use the step function to apply some transforms. variable n will give the current opacity in the animation.
+                step: function(n){
+                    s = 1-n; //scale - will animate from 0 to 1
+                    $(this).css("transform", "scale("+s+")");
+                    // console.log(n)
+                },
+                duration: 1000,
+            })
+        }).promise().done(function(){
+            //after *promising* and *doing* the fadeout animation we will bring the images back
+            storm();
+        })
+    })
+    $(".like").on("click",function () {
+        $(".like").animate({
+            left:"50%",
+            top:"50%",
+        },1500,function () {
+            $(".like img").animate({
+                width:"3000px",
+                marginTop:"-1500px",
+                marginLeft:"-1500px"})
+        },function () {
+            $("#Success_word_div").css("display","block")
+        })
+        $(".nolike").animate({
+            opacity:0
+        },1500,function () {
+            $(".nolike").css("display","none")
+        })
+    })
+    function storm()
+    {
+        $(".nolike").animate({
+            left:"50%",
+            top:"50%",
+            marginTop:"-24px",
+            marginLeft:"-24px"
+        },1500,function () {
+            location.href="https://www."+fail_word+".com"
+        })
+        $(".like").animate({
+            opacity:0
+        },1500,function () {
+            $(".like").css("display","none")
+        })
+    }
+</script>
+<script>
+    var fail_word="你这个傻逼"
+    $(document).ready(function () {
+        $.post("/Client/Session",function (data) {
+            if(data.status=="OK"){
+                $.post("/CheckDemoExist",{demoType:21},function (data) {
+                    if(data.status=="OK"){
+                        OK()
+                    }else{
+                        $.post("/CheckDemoExist",{demoType:22},function (data) {
+                            if(data.status=="OK"){
+                                OK()
+                            }
+                        })
+                    }
+                })
+
+            }
+        })
+        $("#login_button").click(function () {
+            console.log("login")
+            $.post("/ClientLogin",{email:$("#login_account").val(),password:$("#login_password").val()},function (data) {
+                if(data.status=="OK"){
+                    $.post("/CheckDemoExist",{demoType:21},function (data) {
+                        if(data.status=="OK"){
+                            OK()
+                        }else{
+                            $.post("/CheckDemoExist",{demoType:22},function (data) {
+                                if(data.status=="OK"){
+                                    OK()
+                                }else{
+                                    $("#login_message").html("该账号还没有此模板")
+                                }
+                            })
+                        }
+                    })
+                }else{
+                    $("#login_message").html("账号或者密码错误")
+                }
+            })
+        })
+    })
+    function OK() {
+        $.post("/Client/2",function (data) {
+            console.log(data);
+            $("#login_message").html("欢迎您的到来~")
+            $(".login_bg").animate({
+                opacity:0
+            },1500,function () {
+                $(this).css("display","none")
+            })
+            if(data.title.trim()!=""){
+                document.title=data.title
+            }
+            $(".me").html(data.me)
+            $(".you").html(data.you)
+            fail_word=data.fail_word;
+            // $("#Success_word_div").html(data.success_word);
+            if(data.type==22){
+                for (var x in data){
+                    var word=data[x].trim();
+                    if(x.indexOf("p")!=-1&&word!=""){
+                        while(word.indexOf("[我]")!=-1||word.indexOf("[Ta]")!=-1){
+                            word=word.replace("[我]",data.me);
+                            word=word.replace("[Ta]",data.you);
+                        }
+                        console.log(word)
+                        $("#text-"+x.substr(1)).html(word);
+                    }
+                    // console.log(x,data[x])
+                }
+            }
+        })
+
+    }
+</script>
+</html>

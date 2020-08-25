@@ -1,0 +1,40 @@
+spring:
+  mvc:
+    view:
+      prefix: /resources/templates
+      suffix: .html
+    static-path-pattern: /static/**
+    servlet:
+      path: /express_love
+  thymeleaf:
+    mode: LEGACYHTML5
+    cache: false
+    encoding: UTF-8
+    servlet:
+      content-type: text/html
+  datasource:
+    username: root
+    password:
+    url: jdbc:mysql://localhost:3306/express_love?characterEncoding=utf-8
+    driver-class-name: com.mysql.jdbc.Driver
+spring.devtools.restart.enabled: true
+mybatis:
+  mapper-locations: classpath:mybatis/mapper/*.xml
+  config-location:  classpath:mybatis/config/mybatis-config.xml
+server:
+  port: 80
+  session:
+    timeout: 7200
+
+##运行状态 actuator监控
+endpoints:
+  enabled: true
+  info:
+    sensitive: false
+  health:
+    sensitive: false
+management:
+  ##服务路径
+  context-path: /
+  ##服务端口
+  port: 8081

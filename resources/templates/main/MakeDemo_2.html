@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Demo制作</title>
+    <link rel="stylesheet" type="text/css" href="../../static/css/normal.css">
+    <script src="../../static/js/normal.js" ></script>
+    <script src="../../static/js/jquery.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+</head>
+<style>
+
+    #PreviewBg{
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        z-index: 3;
+        background:rgba(255,255,255,0.7);
+        display: none;
+        opacity: 0;
+    }
+    #PreviewImg{
+        display: none;
+        position: fixed;
+        width: 100%;
+        z-index: 4; opacity: 0;
+        top: 50%;
+        bottom: 50%;
+        margin: auto;
+    }
+    @media all and (max-width: 430px) {
+       #Preview div{
+           display: inline-block;
+           width: 9%;
+       }
+    }
+    @media all and (min-width: 430px){
+        #Preview div{
+            display: inline-block;
+            width: 10%;
+        }
+    }
+
+    #Submit{
+        margin-top:20px ;
+        width: 100% ;
+        border: 1px solid #C9C9C9;
+        background-color: #fff;
+        color:#555;
+        display: inline-block;
+        height: 38px;
+        line-height: 38px;
+        padding: 0 18px;
+        white-space: nowrap;
+        text-align: center;
+        font-size: 14px;
+        border-radius: 2px;
+        cursor: pointer;max-width: 760px;
+    }
+    #content{
+        text-align: center;padding: 30px;box-sizing: border-box;border-color:
+            #DEDEDE;background-color:#f3f9f9;
+        min-width: 300px;
+    }
+    #contentForm{
+        padding: 0 10px;max-width:700px;border-width:2px;border-color:#DEDEDE;border-style: solid;padding: 30px;
+        position: relative;left: 0;right: 0;margin: 0 auto;
+    }
+@media all and ( max-width: 450px) {
+        #content{
+            padding: 10px;
+        }
+    }
+    @media all and ( max-width: 334px) {
+        #contentForm{
+            padding: 10px;
+        }
+    }
+    #Mynav span{
+        border-style: solid;
+        border-width: 3px;
+        padding: 5px;
+        border-color:#d5d4d2;
+        border-radius: 5px;
+        margin: 10px;
+    }
+    #Mynav span:hover{
+        border-width: 5px;
+    }
+
+
+
+    #Mynav{
+        padding: 10px;
+
+    }
+
+    #PatternContent{
+        padding: 10px;
+    }
+    #PatternContent div div label{
+        display: inline-block;
+        float: left;
+        width: 110px;
+        padding: 8px 15px;
+        height: 38px;
+        line-height: 20px;
+        border-width: 1px;
+        border-right-width: 1px;
+        border-style: solid;
+        border-right-style: solid;
+        border-radius: 2px 0 0 2px;
+        text-align: center;
+        background-color:
+                #FBFBFB;
+        overflow: hidden;
+        box-sizing: border-box;
+        border-color:
+                #e6e6e6;
+        border-right-color: rgb(230, 230, 230);
+        border-right: none;
+    }
+
+    #PatternContent div div div input{
+        display: block;
+        width: 100%;
+       border-color: #e6e6e6;
+        height: 38px;
+        line-height: 1.3;
+        border-width: 1px;
+        border-style: solid;
+        background-color:
+                #fff;
+        border-radius: 2px;
+    }
+    .content{
+        width: 15px;
+        height: 15px;
+        background-color: antiquewhite;
+        margin: 0px 2px;
+        display: inline-block;
+    }
+    .content_chosen{
+        width: 15px;
+        height: 15px;
+        background-color:#338eaa;
+        color:white;
+        margin: 0px 2px;
+        display: inline-block;
+    }
+    #AddCustom{
+        position: relative;
+        left: 0;
+        right: 0;
+        margin: 10px auto;
+        padding: 30px 16px;
+        display: none;
+        height: 200px;
+        width: 220px;
+        overflow-y: auto;
+        max-height: 400px;
+        border-color: #e6e6e6;
+        border-style: solid;
+        border-width: 1px 1px 1px 5px;
+        font-size: 13px;
+        line-height: 22px;
+        border-left: 5px solid #c2c1fa;
+        border-radius: 0 2px 2px 0;
+        background: 0 0;
+    }
+    .AddCustomPart{
+        display: none;
+        margin: 20px 0;
+    }
+    .AddCustomPart span{
+        font-size: 13px;
+        color: #aaa;
+    }
+
+
+    #AddCustom div{
+        width: 15px;
+        height: 15px;
+        margin: 0px 2px;
+        display: inline-block;
+    }
+</style>
+<script>
+    var Login=false
+    var Pattern="Self-determination"
+    //[我][Ta]识别为我和对象的名字
+    var InputArray=[
+        "开始倾听浪漫表白",
+        "过去的[我]一直是一个人生活，享受着孤独，也憧憬着爱情。",
+        "一个人的长廊",
+        "一个人的山岗",
+        "一个人的地铁",
+        "一个人的游乐场",
+        "但Ta依然乐观，微笑着，等待着",
+        "生活难免有风风雨雨",
+        "Ta总是能够轻松的应对",
+        "并且面带阳光、自信的笑容",
+        "生活也不会总是一帆风顺",
+        "但Ta每次都能勇敢的面对",
+        "可是Ta的爱情又在哪里呢？",
+        "在镜子里面吗？Ta不敢相信",
+        "Ta去问大树，我的爱情在哪里？",
+        "于是，Ta一个人继续向前走",
+        "直到有一天遇见了你",
+        "[我]喜欢[Ta]，非常非常的喜欢，因为[Ta]的出现，[我]脸上有了更加灿烂的笑容",
+        "可是[Ta]会喜欢[我]吗？",
+        "[我]想。。。",
+        "[我]想和[Ta]在一起",
+        "[我]会经常去找[Ta]",
+        "然后两个人一起出去玩",
+        "晚上[我]会把[Ta]送回家",
+        "直到很晚",
+        "然后高兴地进入梦乡，在梦中还会和[Ta]在一起",
+        "[我]想成为了[Ta]的逛街助手",
+        "然后，[我]和[Ta]一起去很多地方玩",
+        "[我]也想和[Ta]一块成为一对吃货",
+        "再然后，他们会搬到了一起",
+        "再然后，[我]会开始学习她的技能",
+        "煮饭",
+        "那时候，每天早上，他们吃着自己做的美食",
+        "然后在同一个站台，高高兴兴的一起上班",
+        "[我]会感觉自己好幸福",
+        "他们可能偶尔也会吵架",
+        "[我]不想这样",
+        "一定是我有什么做的不对,[我]会这么想",
+        "如果没有[Ta]在身边，窗外就没有风景",
+        "如果没有[Ta]在身后",
+        "[我]又怎会飞的更高更远",
+        "[我]不想这样。Ta要为[Ta]改变自己",
+        "我愿意一直陪伴着你",
+        "爱情就像花草一样",
+        "直到一天，[我]不想让自己后悔",
+        "看着惊喜一点点准备好了",
+        "想想未来他们生活的样子",
+        "[我]就会一直充满干劲",
+        "此页面不支持文字",
+        "[我]想和[Ta]一起过幸福的生活",
+        "永远有多远?",
+        "如果三年后你注定是我女朋友，你何不提早行使你的权利",
+        "我爱你",
+        "此页面不支持文字",
+        "我相信[我]和[Ta]的故事会一直继续下去。",
+    ] //54
+
+    $(document).ready(function () {
+
+        $.post("/Client/Session",function (data) {
+            if(data.status=="OK"){
+                $.post("/CheckDemoExist",{demoType:21},function (data) {
+                    if(data.status=="OK"){
+                        goDemo_2()
+                    }else{
+                        $.post("/CheckDemoExist",{demoType:22},function (data) {
+                            if(data.status=="OK"){
+                                goDemo_2()
+                            }
+                        })
+                    }
+                })
+                $("#LoginState img").attr("src","../../static/pic/cancel.png")
+                Login=true
+                $("#LoginMessage").html(data.name)
+            }else{
+                Login=false
+                $("#LoginState img").attr("src","../../static/pic/login.png")
+            }
+        })
+        $("#LoginState img").mouseover(function () {
+            if(Login){
+                $(this).attr("src","../../static/pic/cancel_chosen.png")
+            }else{
+                $(this).attr("src","../../static/pic/login_chosen.png")
+            }
+
+        })
+        $("#LoginState img").click(function () {
+            if(Login){//注销
+                var AskCancelLogin=window.confirm("确定要注销吗?")
+                if(AskCancelLogin){
+                    $.post("/CancelLogin");
+                    setTimeout(function () {
+                        history.go(0)
+                    },1000)
+                }
+            }else{
+                location.href="/Login?Location=MakeDemo_2"
+            }
+        })
+        $("#LoginState img").mouseout(function () {
+            if(Login){
+                $(this).attr("src","../../static/pic/cancel.png")
+
+            }else{
+                $(this).attr("src","../../static/pic/login.png")
+
+            }
+        })
+        $("#LoginMessage").click(function () {
+            location.href="../Client/Reediting"
+        })
+        $("#HeaderLogo").click(function () {
+            location.href='../'
+        })
+        $("#Preview div img").addClass("PreviewImg")
+        $(".PreviewImg").click(function () {
+            $("#PreviewImg").attr("src","../../static/MakeDemo_2/"+$(this).attr("alt")+".png")
+            $("#PreviewImg").css("display","block")
+            $("#PreviewImg").animate({
+                opacity:1
+            })
+            $("#PreviewBg").css("display","block")
+            $("#PreviewBg").animate({
+                opacity:1
+            })
+            console.log($(this).attr("alt"))
+        })
+        $("#PreviewBg").click(function () {
+            $(this).animate({
+                opacity:0
+            },function () {
+                $(this).css("display","none")
+            })
+            $("#PreviewImg").animate({
+                opacity:0
+            },function () {
+                $(this).css("display","none")
+            })
+        })
+        $("#PreviewImg").click(function () {
+            $(this).animate({
+                opacity:0
+            },function () {
+                $(this).css("display","none")
+            })
+            $("#PreviewBg").animate({
+                opacity:0
+            },function () {
+                $(this).css("display","none")
+            })
+        })
+        $("#Mynav span").click(function () {
+            $("#Mynav span").css("border-top-color","")
+            $(this).css("border-top-color","#ea6464")
+            if($(this).html()=="经典"){
+                Pattern="Self-determination"
+                $("#AddCustom").css("display","none")
+                $(".AddCustomPart").css("display","none")
+                $("#Label").html("经典模式")
+            }else{
+                $("#AddCustom").css("display","block")
+                $(".AddCustomPart").css("display","block")
+                $("#Label").html("自定义模式")
+                Pattern="Custom-definition"
+            }
+
+        })
+        $("#Submit").click(function () {
+            if(!Login){
+                tip("请先登录")
+                return false
+            }
+            var formdata = new FormData($("#contentForm")[0]);
+
+            if($("#me").val().trim()==""){
+                tip("你的名字还未输入")
+                return false
+            }else if($("#you").val().trim()==""){
+                tip("对象名字还未输入")
+                return false
+            }
+            loading("正在生成")
+            formdata.delete("CustomWord")
+            for(var x in InputArray){
+                formdata.append("CustomWord",InputArray[x].trim())
+            }
+
+            formdata.set("me",formdata.get("me").trim())
+            formdata.set("you",formdata.get("you").trim())
+            formdata.set("title",formdata.get("title").trim())
+            formdata.set("success_word",formdata.get("success_word").trim())
+            formdata.set("fail_word",formdata.get("fail_word").trim())
+            formdata.set("Pattern",Pattern)
+            $.ajax({
+                url: "/UploadTextDemo_2",
+                type: 'post',
+                cache: false, //上传文件不需要缓存
+                async: true,
+                data: formdata,
+                processData: false, // 此处是关键：告诉jQuery去处理发送的数据
+                contentType: false, // 此处是关键：告诉jQuery不要去设置Content-Type请求头
+                success: function (data) {
+                    closeloading()
+                    if(data.status=="OK"){
+                        tip("创建成功!正在为你跳转")
+                        setTimeout(function () {
+                            location.href="../Client/demo_2"
+                        },2000)
+                    }else{
+                        tip("出错了,请寻找管理员")
+                    }
+                    console.log(data)
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    closeloading()
+                    tip("出错了,请寻找管理员")
+                    console.log(errorThrown);
+                }
+            });
+            return false
+        })
+        $(".content").click(function () {
+            var temp=$(".content_chosen")
+                temp.removeClass("content_chosen")
+            temp.addClass("content")
+            $(this).removeClass("content")
+            $(this).addClass("content_chosen")
+            $(".AddCustomPart label").html("页面-"+$(this).html())
+            console.log(Number($(this).html())-1)
+            console.log(InputArray[Number($(this).html())-1])
+
+            $("#AddCustomText").val(InputArray[Number($(this).html())-1])
+            if(InputArray[Number($(this).html())-1]=="此页面不支持文字"){
+                $("#AddCustomText").attr("readonly","readonly")
+            }else{
+                $("#AddCustomText").removeAttr("readonly")
+            }
+        })
+
+        $("#First").removeClass("content");
+        $("#First").addClass("content_chosen");
+
+    })
+    function ChangeInputArray(){
+        var temp=$(".content_chosen")
+        InputArray[Number(temp.html())-1]= $("#AddCustomText").val()
+    }
+    function goDemo_2() {
+        tip("您已存在过此类模板,现在正在为你跳转")
+        setTimeout(function () {
+            location.href="../Client/demo_2"
+        },2000)
+    }
+
+
+
+</script>
+<body>
+<!--头部-->
+<div id="PreviewBg"></div>
+<img id="PreviewImg" src="" alt="" />
+
+<div id="tipword" ><!--提示框-->
+    <div style="background:
+#ffce15;border-bottom-left-radius: 0;border-bottom-right-radius: 0;"><img width="75px" src="../../static/pic/logo.png">
+    </div><br><br><br>
+
+    <div id="center_word" ></div>
+    <br>
+    <input type="button" id="sure" onclick="closetip()" value="确认"></input><br><br></div>
+<div id="tipbackground" onclick="closetip()" ></div>
+
+<div id="loading">
+    <div>
+    <img style="width: 100%" src="../../static/pic/loading.gif"/>
+        <label></label>
+    </div>
+</div>
+<header style="width: 100%;min-width:300px;height: 75px;background:#eeeeee;text-align: left">
+    <div style="display: inline">
+        <img id="HeaderLogo"  alt="" src="../../static/pic/logo.png"/>
+    </div>
+    <div id="LoginState" style="margin-right:10% ;width: 45px;float: right;">
+        <img style="cursor: pointer;
+position: relative;
+height: 45px;"  src="../../static/pic/login.png"/>
+        <span id="LoginMessage" >未登录</span>
+    </div>
+</header>
+
+<div id="content">
+    <form id="contentForm" enctype="multipart/form-data" onsubmit="return false">
+        <h3 style="background:#eee;height: 30px;font-size: 20px;">Demo_2制作</h3>
+        <blockquote style="overflow-y:auto;max-height:400px;margin-top: 10px;border-color: #e6e6e6;border-style: solid;
+border-width: 1px 1px 1px 5px;margin-bottom: 10px;font-size: 13px;padding: 15px;
+line-height: 22px;border-left: 5px solid #009688;border-radius: 0 2px 2px 0;background: 0 0;">
+            <span>图片预览：</span><br/>
+            <div id="Preview">
+                <div>
+                </div>
+                <div>
+                    <img alt="5" style="width: 100%" src="../../static/MakeDemo_2/5.png" />
+                </div>
+                <div>
+                    <img alt="11" style="width: 100%" src="../../static/MakeDemo_2/11.png" />
+                </div>
+                <div>
+                </div>
+                <div>
+                </div>
+                <div>
+                </div>
+                <div>
+                    <img alt="39" style="width: 100%" src="../../static/MakeDemo_2/39.png" />
+                </div>
+                <div>
+                    <img alt="46" style="width: 100%" src="../../static/MakeDemo_2/46.png" />
+                </div>
+                <div>
+                </div>
+                <div>
+                    <img alt="1" style="width: 100%" src="../../static/MakeDemo_2/1.png" />
+                </div>
+                <div>
+                    <img alt="6" style="width: 100%" src="../../static/MakeDemo_2/6.png" />
+                </div>
+                <div>
+                    <img alt="12" style="width: 100%" src="../../static/MakeDemo_2/12.png" />
+                </div>
+                <div>
+                    <img alt="18" style="width: 100%" src="../../static/MakeDemo_2/18.png" />
+                </div>
+                <div>
+                </div>
+                <div>
+                    <img alt="21" style="width: 100%" src="../../static/MakeDemo_2/21.png" />
+                </div>
+                <div>
+                    <img alt="40" style="width: 100%" src="../../static/MakeDemo_2/40.png" />
+                </div>
+                <div>
+                    <img alt="47" style="width: 100%" src="../../static/MakeDemo_2/47.png" />
+                </div>
+                <div>
+                    <img alt="52" style="width: 100%" src="../../static/MakeDemo_2/52.png" />
+                </div>
+                <div>
+                    <img alt="2" style="width: 100%" src="../../static/MakeDemo_2/2.png" />
+                </div> <div>
+                    <img alt="7" style="width: 100%" src="../../static/MakeDemo_2/7.png" />
+                </div> <div>
+                    <img alt="13" style="width: 100%" src="../../static/MakeDemo_2/13.png" />
+                </div> <div>
+                    <img alt="19" style="width: 100%" src="../../static/MakeDemo_2/19.png" />
+                </div> <div>
+                    <img alt="25" style="width: 100%" src="../../static/MakeDemo_2/25.png" />
+                </div> <div>
+                    <img alt="33" style="width: 100%" src="../../static/MakeDemo_2/33.png" />
+                </div> <div>
+                    <img alt="41" style="width: 100%" src="../../static/MakeDemo_2/41.png" />
+                </div> <div>
+                    <img alt="48" style="width: 100%" src="../../static/MakeDemo_2/48.png" />
+                </div> <div>
+                    <img alt="53" style="width: 100%" src="../../static/MakeDemo_2/53.png" />
+                </div> <div>
+                    <img alt="3" style="width: 100%" src="../../static/MakeDemo_2/3.png" />
+                </div> <div>
+                    <img alt="8" style="width: 100%" src="../../static/MakeDemo_2/8.png" />
+                </div> <div>
+                    <img alt="14" style="width: 100%" src="../../static/MakeDemo_2/14.png" />
+                </div> <div>
+                    <img  alt="20" style="width: 100%" src="../../static/MakeDemo_2/20.png" />
+                </div> <div>
+                    <img alt="26" style="width: 100%" src="../../static/MakeDemo_2/26.png" />
+                </div> <div>
+                    <img alt="34" style="width: 100%" src="../../static/MakeDemo_2/34.png" />
+                </div> <div>
+                    <img alt="42" style="width: 100%" src="../../static/MakeDemo_2/42.png" />
+                </div> <div>
+                    <img alt="49" style="width: 100%" src="../../static/MakeDemo_2/49.png" />
+                </div> <div>
+                    <img alt="54" style="width: 100%" src="../../static/MakeDemo_2/54.png" />
+                </div> <div>
+                    <img alt="4" style="width: 100%" src="../../static/MakeDemo_2/4.png" />
+                </div> <div>
+                    <img alt="9" style="width: 100%" src="../../static/MakeDemo_2/9.png" />
+                </div> <div>
+                    <img alt="15" style="width: 100%" src="../../static/MakeDemo_2/15.png" />
+                </div> <div>
+                    <img alt="21" style="width: 100%" src="../../static/MakeDemo_2/21.png" />
+                </div> <div>
+                    <img alt="27" style="width: 100%" src="../../static/MakeDemo_2/27.png" />
+                </div> <div>
+                    <img alt="35" style="width: 100%" src="../../static/MakeDemo_2/35.png" />
+                </div> <div>
+                    <img alt="43" style="width: 100%" src="../../static/MakeDemo_2/43.png" />
+                </div> <div>
+                    <img alt="50" style="width: 100%" src="../../static/MakeDemo_2/50.png" />
+                </div> <div>
+                    <img alt="55" style="width: 100%" src="../../static/MakeDemo_2/55.png" />
+                </div><div>
+                </div> <div>
+                    <img alt="10" style="width: 100%" src="../../static/MakeDemo_2/10.png" />
+                </div> <div>
+                    <img alt="16" style="width: 100%" src="../../static/MakeDemo_2/16.png" />
+                </div> <div>
+                    <img alt="22" style="width: 100%" src="../../static/MakeDemo_2/22.png" />
+                </div> <div>
+                    <img alt="28" style="width: 100%" src="../../static/MakeDemo_2/28.png" />
+                </div> <div>
+                    <img alt="36" style="width: 100%" src="../../static/MakeDemo_2/36.png" />
+                </div> <div>
+                    <img alt="44" style="width: 100%" src="../../static/MakeDemo_2/44.png" />
+                </div> <div>
+                    <img alt="51" style="width: 100%" src="../../static/MakeDemo_2/51.png" />
+                </div> <div>
+                </div> <div>
+                </div> <div>
+                </div> <div>
+                    <img alt="17"  style="width: 100%" src="../../static/MakeDemo_2/17.png" />
+                </div> <div>
+                    <img alt="23" style="width: 100%" src="../../static/MakeDemo_2/23.png" />
+                </div> <div>
+                    <img alt="29" style="width: 100%" src="../../static/MakeDemo_2/29.png" />
+                </div> <div>
+                    <img alt="37" style="width: 100%" src="../../static/MakeDemo_2/37.png" />
+                </div> <div>
+                    <img alt="45" style="width: 100%" src="../../static/MakeDemo_2/45.png" />
+                </div> <div>
+                </div> <div>
+                </div> <div>
+                </div> <div>
+                </div> <div>
+                </div> <div>
+                    <img alt="24" style="width: 100%" src="../../static/MakeDemo_2/24.png" />
+                </div> <div>
+                    <img alt="30" style="width: 100%" src="../../static/MakeDemo_2/30.png" />
+                </div> <div>
+                    <img alt="38" style="width: 100%" src="../../static/MakeDemo_2/38.png" />
+                </div> <div>
+                </div> <div>
+                </div> <div>
+                </div>
+
+                <div>
+                    <img alt="31" style="width: 100%" src="../../static/MakeDemo_2/31.png" />
+                </div>
+
+            </div>
+            <span style="color: #abaaaa;">点击查看详情</span>
+        </blockquote>
+        <nav id="Mynav" >
+            <span style="border-top-color: rgb(234, 100, 100);">经典</span>
+            <span>自定义</span>
+        </nav>
+        <div id="Pattern">
+
+            <div id="PatternContent">
+                <label id="Label" style="margin: 10px 0;display: inline-block;padding: 8px 15px;height: 38px;line-height: 20px;
+border-width: 1px;border-style: solid;background-color:#FBFBFB;overflow: hidden;
+border-color:#e6e6e6;float: none;width: 100%;border-radius: 2px;box-sizing: border-box;
+text-align: left;">经典模式</label>
+                <div>
+                    <div><label>你的名字</label><div style="display: flex;"><input id="me" PLACEHOLDER="输入你的名字" name="me" type="text" maxlength="10" /></div></div>
+                    <div><label>对象名字</label><div style="display: flex;"><input id="you" PLACEHOLDER="输入对象名字" name="you" type="text" maxlength="10" /></div></div>
+                    <div><label>网页标题</label><div style="display: flex;"><input id="title" name="title" PLACEHOLDER="" type="text" maxlength="10" /></div></div>
+                    <div id="AddCustom">
+                        <div></div>
+                        <div class="content">5</div>
+                        <div class="content">11</div>
+                        <div ></div>
+                        <div></div>
+                        <div></div>
+                        <div class="content">39</div>
+                        <div class="content">46</div>
+                        <div></div>
+
+                        <div id="First" class="content">1</div>
+                        <div class="content">6</div>
+                        <div class="content">12</div>
+                        <div class="content">18</div>
+                        <div></div>
+                        <div class="content">32</div>
+                        <div class="content">40</div>
+                        <div class="content">47</div>
+                        <div class="content">52</div>
+
+                        <div class="content">2</div>
+                        <div class="content">7</div>
+                        <div class="content">13</div>
+                        <div class="content">19</div>
+                        <div class="content">25</div>
+                        <div class="content">33</div>
+                        <div class="content">41</div>
+                        <div class="content">48</div>
+                        <div class="content">53</div>
+
+                        <div class="content">3</div>
+                        <div class="content">8</div>
+                        <div class="content">14</div>
+                        <div class="content">20</div>
+                        <div class="content">26</div>
+                        <div class="content">34</div>
+                        <div class="content">42</div>
+                        <div class="content">49</div>
+                        <div class="content">54</div>
+
+                        <div class="content">4</div>
+                        <div class="content">9</div>
+                        <div class="content">15</div>
+                        <div class="content">21</div>
+                        <div class="content">27</div>
+                        <div class="content">35</div>
+                        <div class="content">43</div>
+                        <div class="content">50</div>
+                        <div class="content">55</div>
+
+                        <div></div>
+                        <div class="content">10</div>
+                        <div class="content">16</div>
+                        <div class="content">22</div>
+                        <div class="content">28</div>
+                        <div class="content">36</div>
+                        <div class="content">44</div>
+                        <div class="content">51</div>
+                        <div></div>
+
+                        <div></div>
+                        <div></div>
+                        <div class="content">17</div>
+                        <div class="content">23</div>
+                        <div class="content">29</div>
+                        <div class="content">37</div>
+                        <div class="content">45</div>
+                        <div></div>
+                        <div></div>
+
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div class="content">24</div>
+                        <div class="content">30</div>
+                        <div class="content">38</div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+
+                        <div class="content">31</div>
+
+                    </div>
+                    <div class="AddCustomPart"> <span>[我]代表你的名字、[Ta]代表对象的名字,生成后会替换成上面输入的名字</span></div>
+                    <div class="AddCustomPart"><label>页面-1</label><div style="display: flex;"><input name="CustomWord" autocomplete="off" onchange="ChangeInputArray()" value="开始倾听浪漫表白"  id="AddCustomText"  type="text" maxlength="30" /></div></div>
+
+                    <div><label style="width:auto">成功后你要对Ta说的话</label><div style="display: block"><input  name="success_word" id="success" type="text" maxlength="30" /></div></div>
+                    <div><label style="width:auto">失败后你要对Ta说的话</label><div style="display: block"><input  name="fail_word" id="fail" type="text" maxlength="30" /></div></div>
+                </div>
+
+
+                <button id="Submit" >提交生成</button>
+            </div>
+
+
+        </div>
+
+    </form>
+
+</div>
+<!--尾部-->
+<footer style="color: #c74545;
+    text-align: center;
+    float: left;
+    width: 100%;
+    background: #eeeeee;min-width: 300px;
+    height: 40px;"><span style="font-size: 15px;position: relative;top:10px;">个人网站©2020<a style="color: black;text-decoration-line:none;" href="http://beian.miit.gov.cn" target="_blank">粤ICP备20011030号</a></span></footer>
+
+</body>
+</html>

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charsethelloworld="UTF-8">
+    <title>表爱网</title>
+    <script src="../../static/js/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../static/css/normal.css">
+    <script src="../../static/js/normal.js" ></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta charset="UTF-8">
+</head>
+<style>
+    #detail{
+
+        background-color: #eee;
+        text-align: center;
+        font-size: 22px;
+        width: 75%;
+    }
+    #detail span{
+        margin-bottom:5px;
+    }
+
+    #detail div img{
+        width: 100%;
+        position: relative;
+        display: block;
+    }
+    #detail div{
+        display: none;
+    }
+    #leader img{
+        width: 100%;
+        position: relative;
+        display: block;
+        cursor: pointer;
+        border-color: #c1d4e6;
+        border-width: 7px;
+        border-style: double none;
+    }
+    .leader_chosen{
+        box-shadow: 0 0 20px rgb(234, 111, 111);
+    }
+    body{
+        height: 700px;
+    }
+    .scrollbar-1::-webkit-scrollbar {/*滚动条整体样式*/
+        width: 10px;     /*高宽分别对应横竖滚动条的尺寸*/
+        height: 1px;
+    }
+    .scrollbar-1::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+        border-radius: 10px;
+        -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+        background: #535353;
+    }
+    .scrollbar-1::-webkit-scrollbar-track {/*滚动条里面轨道*/
+        -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+        border-radius: 10px;
+        background: #EDEDED;
+    }
+    .scrollbar-2::-webkit-scrollbar {/*滚动条整体样式*/
+        width: 10px;     /*高宽分别对应横竖滚动条的尺寸*/
+        height: 1px;
+    }
+    .scrollbar-2::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+        border-radius: 10px;
+        background-color:  #535353;
+        background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent);
+    }
+    .scrollbar-2::-webkit-scrollbar-track {/*滚动条里面轨道*/
+        -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+        /*border-radius: 10px;*/
+        background: #EDEDED;
+    }
+    @media all and (max-width:1300px){
+        #detail{
+            width: 70%;
+        }
+
+    }
+    @media all and (max-width:600px){
+        #detail span{
+            font-size: 15px;
+        }
+    }
+
+@media all and (max-width: 300px) {
+    #leader{
+        width: 90px;
+    }
+    #detail{
+        width: 210px;
+    }
+
+    }
+
+</style>
+<script>
+    var DemoArray=[]
+    var temp="DEMO_1"
+    $(document).ready(function () {
+        var Login=false
+        $.post("/Client/Session",function (data) {
+            if(data.status=="OK"){
+                $.post("/CheckDemoExist",{demoType:1},function (data) {
+                    if(data.status=="OK"){
+                        DemoArray.push("Demo_1")
+                        $("#MakeDemo_1").html("我做过的模板")
+                        $("#MakeDemo_1").click(function () {
+                            location.href='/Client/demo_1'
+                        })
+                    }
+                })
+                $.post("/CheckDemoExist",{demoType:21},function (data) {
+                    if(data.status=="OK"){
+                        DemoArray.push("Demo_2")
+                        $("#MakeDemo_2").html("我做过的模板")
+                        $("#MakeDemo_2").click(function () {
+                            location.href='/Client/demo_2'
+                        })
+                    }else{
+                        $.post("/CheckDemoExist",{demoType:22},function (data) {
+                            if(data.status=="OK"){
+                                DemoArray.push("Demo_2")
+                                $("#MakeDemo_2").html("我做过的模板")
+                                $("#MakeDemo_2").click(function () {
+                                    location.href='/Client/demo_2'
+                                })
+                            }
+                        })
+                    }
+                })
+                $("#LoginState img").attr("src","../../static/pic/cancel.png")
+                Login=true
+                $("#LoginMessage").html(data.name)
+            }else{
+                Login=false
+                $("#LoginState img").attr("src","../../static/pic/login.png")
+            }
+        })
+        $("#LoginMessage").click(function () {
+            location.href="/Client/Reediting"
+        })
+        $("#LoginState img").mouseover(function () {
+            if(Login){
+                $(this).attr("src","../../static/pic/cancel_chosen.png")
+            }else{
+                $(this).attr("src","../../static/pic/login_chosen.png")
+            }
+
+        })
+        $("#LoginState img").click(function () {
+            if(Login){ //注销
+                var AskCancelLogin=window.confirm("确定要注销吗?")
+                if(AskCancelLogin){
+                    $.post("/CancelLogin");
+                    setTimeout(function () {
+                        history.go(0)
+                    },1000)
+                }
+            }else{
+                location.href="/Login"
+            }
+        })
+        $("#LoginState img").mouseout(function () {
+            if(Login){
+                $(this).attr("src","../../static/pic/cancel.png")
+
+            }else{
+                $(this).attr("src","../../static/pic/login.png")
+
+            }
+        })
+        $("#leader  img").click(function () {
+            $("#leader img").removeClass("leader_chosen");
+            $(this).addClass("leader_chosen");
+
+            if(temp!=$(this).attr("alt")){
+                $("#Detail_"+temp).css("display","none");
+                temp=$(this).attr("alt")
+                console.log(temp)
+                $("#Detail_"+$(this).attr("alt")).css("display","block");
+            }
+        })
+        $("#Detail_DEMO_1").css("display","block");
+        $("#MakeDemo_1").click(function () {
+                location.href='/MakeDemo_1'
+        })
+        $("#MakeDemo_2").click(function () {
+                location.href='/MakeDemo_2'
+        })
+    })
+</script>
+<body>
+<!--头部-->
+<div id="tipword" ><!--提示框-->
+    <div style="background:
+#ffce15;border-bottom-left-radius: 0;border-bottom-right-radius: 0;"><img width="75px" src="../../static/pic/logo.png">
+    </div><br><br><br>
+
+    <div id="center_word" ></div>
+    <br>
+    <input type="button" id="sure" onclick="closetip()" value="确认"></input><br><br></div>
+<div id="tipbackground" onclick="closetip()" ></div>
+<header style="width: 100%;min-width:300px;height: 75px;background:#eeeeee;text-align: left">
+    <div style="display: inline">
+    <img id="HeaderLogo"  alt="" src="../../static/pic/logo.png"/>
+    </div>
+    <div id="LoginState" style="margin-right:10% ;width: 45px;float: right;">
+        <img style="cursor: pointer;
+position: relative;
+height: 45px;"  src="../../static/pic/login.png"/>
+    <span id="LoginMessage" >未登录</span>
+    </div>
+</header>
+<!--导航-->
+<div style="min-width: 300px;
+width: 100%;">
+<div id="leader" class="scrollbar-1" style="min-width: 90px;background-color: #d0efd8;text-align: center;float: left;width: 30%;max-width: 325px;height: 600px;overflow-y: auto;">
+    <span style="display: block;
+    background-color: #e8d4bc;
+    color: white;">样式种类</span>
+    <span>DEMO_1</span>
+    <img class="leader_chosen" alt="DEMO_1" src="../../static/pic/demo_1/2.png" />
+    <span>DEMO_2</span>
+    <img alt="DEMO_2" src="../../static/pic/demo_2/1.gif" />
+</div>
+<!--显示-->
+<div  id="detail" class="scrollbar-2" style="float: left;height: 600px;overflow-y: auto;">
+    <span style="display: block;
+    background-color: #e1f1ff;
+    text-align: center;
+    font-size: 25px;">相关演示及图片</span>
+    <div id="Detail_DEMO_1">
+        <span>DEMO_1可以依据你上传的图片来组合成一个爱心</span>
+        <img src="../../static/pic/demo_1/1.png"/>
+        <span>每一次刷新DEMO_1都会有不同的组合情况</span>
+        <img src="../../static/pic/demo_1/2.png"/>
+        <span>
+            <button class="button-1" onclick="location.href='/demo_1'">站长模板</button>
+            <button id="MakeDemo_1" class="button-1" >我也要做</button>
+        </span>
+    </div>
+    <div id="Detail_DEMO_2">
+        <span>DEMO_2开头</span>
+        <img src="../../static/pic/demo_2/1.png"/>
+        <span>可以点击右下爱心直接跳转到对应的模块</span>
+        <img src="../../static/pic/demo_2/2.png"/>
+        <img src="../../static/pic/demo_2/3.png"/>
+        <img src="../../static/pic/demo_2/4.png"/>
+        <img src="../../static/pic/demo_2/5.png"/>
+        <span>DEMO_2结尾,右上角有喜欢和讨厌的标志</span>
+        <img src="../../static/pic/demo_2/6.png"/>
+
+        <span>点击讨厌后会消除整个爱心，然后跳转到www.你这个傻逼.com（hahaha）</span>
+        <img src="../../static/pic/demo_2/1.gif"/>
+        <span>点击喜欢后会可以添加你想说的话</span>
+        <img src="../../static/pic/demo_2/2.gif"/>
+        <span>
+            <button class="button-1" onclick="location.href='/demo_2'">站长模板</button>
+            <button id="MakeDemo_2" class="button-1" >我也要做</button>
+        </span>
+    </div>
+</div>
+</div>
+<!--尾部-->
+<footer style="color: #c74545;
+    text-align: center;
+    float: left;
+    width: 100%;
+    background: #eeeeee;min-width: 300px;
+    height: 40px;"><span style="font-size: 15px;position: relative;top:10px;">个人网站©2020<a style="color: black;text-decoration-line:none;" href="http://beian.miit.gov.cn" target="_blank">粤ICP备20011030号</a></span></footer>
+
+</body>
+</html>

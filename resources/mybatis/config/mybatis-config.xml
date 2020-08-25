@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<!--这里在没有导入mybatis.jar时会出现错误-->
+<configuration>
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+    <typeAliases>
+        <package name="com.bo.express_love.entity"/>
+    </typeAliases>
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageInterceptor"/>
+    </plugins>
+
+
+</configuration>
+        <!--&lt;!&ndash; 打开延迟加载的开关 &ndash;&gt;-->
+        <!--<setting name="lazyLoadingEnabled" value="true" />-->
+        <!--&lt;!&ndash; 将积极加载改为消息加载即按需加载 &ndash;&gt;-->
+        <!--<setting name="aggressiveLazyLoading" value="false"/>-->
+        <!--&lt;!&ndash;二级缓存&ndash;&gt;-->
+        <!--<setting name="cacheEnabled" value="true"/>-->
+        <!--<setting name="logImpl" value="COMMONS_LOGGING"/>-->
+        <!--<environments default="POOLEDEnvironment">-->
+        <!--<environment id="POOLEDEnvironment">-->
+        <!--<transactionManager type="JDBC"/>-->
+        <!--<dataSource type="POOLED">-->
+        <!--<property name="driver" value="com.mysql.jdbc.Driver"/>-->
+        <!--<property name="url" value="jdbc:mysql://localhost:3306/mybatis?characterEncoding=UTF-8&amp;allowMultiQueries=yes"/>-->
+        <!--<property name="username" value="root"/>-->
+        <!--<property name="password" value=""/>-->
+        <!--</dataSource>-->
+        <!--</environment>-->
+        <!--<environment id="c3p0Environment">-->
+        <!--<transactionManager type="JDBC"/>-->
+        <!--<dataSource type="com.MyBatis.C3P0DataSourceFactory">-->
+        <!--&lt;!&ndash;这里需要填写自己的类位置↑&ndash;&gt;-->
+        <!--<property name="driverClass" value="com.mysql.jdbc.Driver" />-->
+        <!--<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/mybatis?useUnicode=true&amp;characterEncoding=UTF-8&amp;autoReconnect=true&amp;failOverReadOnly=false"/>-->
+        <!--<property name="user" value="root" />-->
+        <!--<property name="password" value="" />-->
+        <!--&lt;!&ndash; 连接池初始化大小为3 &ndash;&gt;-->
+        <!--<property name="initialPoolSize" value="3"/>-->
+        <!--&lt;!&ndash; 连接池最大为10 &ndash;&gt;-->
+        <!--<property name="maxPoolSize" value="10"/>-->
+        <!--&lt;!&ndash; 连接池最小为3 &ndash;&gt;-->
+        <!--<property name="minPoolSize" value="3"/>-->
+        <!--&lt;!&ndash; 连接池在无空闲连接可用时一次性最多创建的新数据库连接数  &ndash;&gt;-->
+        <!--<property name="acquireIncrement" value="5"/>-->
+        <!--&lt;!&ndash; 连接的最大空闲时间，如果超过这个时间（秒），某个数据库连接还没有被使用，则会断开掉这个连接。如果为0，则永远不会断开连接,即回收此连接 &ndash;&gt;-->
+        <!--<property name="maxIdleTime" value="30"/>-->
+
+        <!--&lt;!&ndash; 最大的Statement数量 &ndash;&gt;-->
+        <!--<property name="maxStatements" value="500"/>-->
+        <!--&lt;!&ndash; 每个连接启动的最大Statement数量 &ndash;&gt;-->
+        <!--<property name="maxStatementsPerConnection" value="50"/>-->
+        <!--&lt;!&ndash; 同时运行的线程数 &ndash;&gt;-->
+        <!--<property name="numHelperThreads" value="5"/>-->
+        <!--</dataSource>-->
+        <!--</environment>-->
+        <!--</environments>-->

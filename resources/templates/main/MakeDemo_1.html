@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Demo制作</title>
+    <link type="text/css" rel="stylesheet" href="../../static/css/normal.css"/>
+    <script src="../../static/js/normal.js"></script>
+    <script src="../../static/js/jquery.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+</head>
+<style>
+    #submit{
+        width: 100% ;
+        border: 1px solid #C9C9C9;
+        background-color: #fff;
+        color:#555;
+        display: inline-block;
+        height: 38px;
+        line-height: 38px;
+        padding: 0 18px;
+        white-space: nowrap;
+        text-align: center;
+        font-size: 14px;
+        border-radius: 2px;
+        cursor: pointer;max-width: 760px;
+    }
+    #content{
+        text-align: center;height:700px;padding: 30px;box-sizing: border-box;border-color:
+            #DEDEDE;background-color:#f3f9f9;
+        min-width: 300px;
+    }
+    #contentForm{
+        max-height: 560px;
+        padding: 0 10px;max-width:700px;border-width:2px;border-color:#DEDEDE;border-style: solid;padding: 30px;
+        position: relative;left: 0;right: 0;margin: 0 auto;
+    }
+@media all and ( max-width: 450px) {
+        #content{
+            padding: 10px;
+        }
+    }
+    @media all and ( max-width: 334px) {
+        #contentForm{
+            padding: 10px;
+        }
+    }
+</style>
+<script>
+
+    var Login=false
+    var cartoonpic_check=false;
+    var file_drag=[];
+    var Url=window.location.href;
+    var UrlIndex=Url.lastIndexOf("?demo=")
+    var demo=Url.substr(UrlIndex+6)
+    // console.log(demo)
+    // 获得拖拽文件的回调函数
+    function checkDropFinish () {
+        if ( dealFileCnt === allFileLen-1 ) {
+            getDropFileCallBack(dropFiles);
+        }
+        dealFileCnt++;
+    }
+    function getDropFileCallBack (dropFiles) {
+        console.log(dropFiles, dropFiles.length);
+    }
+    function previewImg(event){
+        //input 上传文件的操作与拖动放入联动
+        /*预览图片*/
+        // console.log(event)  // 这里可以看整个event是什么可以输出查看
+        // for(var x in event.files){
+        //    var File_exist=true
+        //     for(var y in file_drag){
+        //         if( event.files[x]==file_drag[y]){
+        //             File_exist=false
+        //         }
+        //     }
+        //     if(File_exist){
+        //         file_drag.push(event.files[x])
+        //     }
+        // }
+        var length=event.files.length;
+        for (var x =0;x<length;x++){
+            // console.log(event.files[x]);
+            var filename = event.files[x];//这个输出的是上传文件的全路径值。看需求，如果要求输出上传文件的全路径，用这个。
+            if(file_drag.length>=70){
+                tip('最多不超过70张');
+                return
+            }
+            if (filename.size > 3*1024 * 1024) {
+                tip('请上传小于3MB的JPG和PNG图片');
+                return
+            } else {
+                var suffixIndex=filename.name.lastIndexOf(".");
+                var suffix=filename.name.substring(suffixIndex+1).toUpperCase();
+                // console.log(suffix)
+                if (suffix=="JPG"||suffix=="JPEG"||suffix=="PNG") {   //这个判断文件的类型，是不是txt文件。及判断文件名是否包含tx
+                        file_drag.push(event.files[x])
+                        var newsrc = getObjectURL(event.files[x]);
+                    $("blockquote div").html($("blockquote div").html()
+                        +"<div style='display: inline;padding-bottom: 10px;' id='file_div_"+(file_drag.length+x)+"'>" +
+                        "<img style='width: 100%;max-width: 100px;' src='"+newsrc+"' />" +
+                        // "<img id='file_img_"+(file_drag.length+x)+"' src='../../static/pic/delete.png' style='position: relative;left: -8px;bottom: -8px;'>" +
+                        "</div>")
+                   // console.log(("#file_img_"+(file_drag.length+Number(x))))
+                    // $("#file_img_"+(file_drag.length+Number(x))).on("click",function () {
+                    //     $(this).parent().remove()
+                    //     file_drag.splice((file_drag.length+x),1)
+                    // })
+                        cartoonpic_check=true
+
+                } else {
+                    tip('请上传JPG和PNG图片')
+                    return
+                }
+            }
+
+        }
+    }
+    function getObjectURL( file ) {/*创建图片url*/
+        var url = null;
+        // 下面函数执行的效果是一样的，只是需要针对不同的浏览器执行不同的 js 函数而已
+        if ( window.createObjectURL != undefined ) { // basic
+            url = window.createObjectURL( file );
+        } else if ( window.URL != undefined ) { // mozilla(firefox)
+            url = window.URL.createObjectURL( file );
+        } else if ( window.webkitURL != undefined ) { // webkit or chrome
+            url = window.webkitURL.createObjectURL( file );
+        }
+        return url;
+    }
+
+    $(document).ready(function () {
+        $.post("/Client/Session",function (data) {
+            if(data.status=="OK"){
+                $.post("/CheckDemoExist",{demoType:1},function (data) {
+                    if(data.status=="OK"){
+                        tip("您已存在过此类模板,现在正在为你跳转")
+                       setTimeout(function () {
+                           location.href="../Client/demo_1"
+                       },2000)
+                    }
+                })
+                $("#LoginState img").attr("src","../../static/pic/cancel.png")
+                Login=true
+                $("#LoginMessage").html(data.name)
+            }else{
+                Login=false
+                $("#LoginState img").attr("src","../../static/pic/login.png")
+
+            }
+        })
+        $("#LoginState img").mouseover(function () {
+            if(Login){
+                $(this).attr("src","../../static/pic/cancel_chosen.png")
+            }else{
+                $(this).attr("src","../../static/pic/login_chosen.png")
+            }
+
+        })
+        $("#LoginState img").click(function () {
+            if(Login){//注销
+                var AskCancelLogin=window.confirm("确定要注销吗?")
+                if(AskCancelLogin){
+                    $.post("/CancelLogin");
+                    setTimeout(function () {
+                        history.go(0)
+                    },1000)
+                }
+            }else{
+                location.href="/Login?Location=MakeDemo_1"
+            }
+        })
+        $("#LoginState img").mouseout(function () {
+            if(Login){
+                $(this).attr("src","../../static/pic/cancel.png")
+
+            }else{
+                $(this).attr("src","../../static/pic/login.png")
+
+            }
+        })
+        $("#UploadPlace").click(function (e) {//点击上传模块，模拟点击上传按钮
+            var a = document.getElementById("upload_input")
+            var clickEvent = document.createEvent("MouseEvents");
+            clickEvent.initEvent("click", true, true);
+            a.dispatchEvent(clickEvent);
+            e.preventDefault();//阻止浏览器默认行为
+            e.stopPropagation();//阻止事件冒泡
+            return false; //停止事件冒泡和阻止浏览器默认行为
+        })
+        $("#LoginMessage").click(function () {
+            location.href="../Client/Reediting"
+        })
+        $("#HeaderLogo").click(function () {
+            location.href='../'
+        })
+        var dropZone = document.querySelector("#UploadPlace");
+        dropZone.addEventListener("dragenter", function (e) {//禁止浏览器默认行为
+            e.preventDefault();
+            e.stopPropagation();
+            window.event.cancelBubble = true;
+        }, false);
+
+        dropZone.addEventListener("dragover", function (e) {
+            e.dataTransfer.dropEffect = 'copy'; // 兼容某些三方应用，如圈点
+            e.preventDefault();
+            e.stopPropagation();
+            window.event.cancelBubble = true;
+        }, false);
+
+        dropZone.addEventListener("dragleave", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            window.event.cancelBubble = true;
+        }, false);
+
+        dropZone.addEventListener("drop", function (e) {
+
+            e.preventDefault();
+            e.stopPropagation();
+            window.event.cancelBubble = true;
+            // console.log("drop");
+
+            var df = e.dataTransfer;
+            var dropFiles = []; // 拖拽的文件，会放到这里
+            var dealFileCnt = 0; // 读取文件是个异步的过程，需要记录处理了多少个文件了
+            var allFileLen = df.files.length; // 所有的文件的数量，给非Chrome浏览器使用的变量
+
+            // 检测是否已经把所有的文件都遍历过了
+            if(df.items !== undefined){
+                // previewImg(df)
+                // Chrome拖拽文件逻辑
+                for(var i = 0; i < df.items.length; i++) {
+                    if(file_drag.length>=70){
+                        tip('最多不超过70张');
+                        return
+                    }
+                    var item = df.items[i];
+                    if(item.kind === "file" && item.webkitGetAsEntry().isFile) {
+                        var file = item.getAsFile();
+
+                        // console.log(file);
+                        if (file.size > 3*1024 * 1024) {
+                            tip('请上传小于3MB的JPG和PNG图片');
+                            return
+                        }
+                        if(file.type.toUpperCase().indexOf("JPG")!=-1||file.type.toUpperCase().indexOf("JPEG")!=-1||file.type.toUpperCase().indexOf("PNG")!=-1){
+                                dropFiles.push(file);
+                                var newsrc = getObjectURL(file);
+                            $("blockquote div").html($("blockquote div").html()
+                                +"<div style='display: inline;padding-bottom: 10px;' id='file_div_"+(file_drag.length+x)+"'>" +
+                                "<img style='width: 100%;max-width: 100px;' src='"+newsrc+"' />" +
+                                // "<img id='file_img_"+(file_drag.length+x)+"' src='../../static/pic/delete.png' style='position: relative;left: -8px;bottom: -8px;'>" +
+                                "</div>")
+                                cartoonpic_check=true
+                        }else{
+                            tip('请上传JPG和PNG图片')
+                            return
+                        }
+                    }
+                }
+            } else {
+                // 非Chrome拖拽文件逻辑
+                for(var i = 0; i < allFileLen; i++) {
+                    var dropFile = df.files[i];
+                    if ( dropFile.type ) {
+                       dropFiles.push(dropFile);
+                        checkDropFinish();
+                    } else {
+                        try {
+                            var fileReader = new FileReader();
+                            fileReader.readAsDataURL(dropFile.slice(0, 3));
+
+                            fileReader.addEventListener('load', function (e) {
+                                // console.log('load');
+                                dropFiles.push(dropFile);
+                                checkDropFinish();
+                            }, false);
+                            fileReader.addEventListener('error', function (e) {
+                                console.log('error，不可以上传文件夹');
+                                checkDropFinish();
+                            }, false);
+
+                        } catch (e) {
+                            console.log('catch error，不可以上传文件夹');
+                            checkDropFinish();
+                        }
+                    }
+                }
+            }
+            for(var x in dropFiles){
+                var File_exist=true
+                for(var y in file_drag){
+                    if(  dropFiles[x]==file_drag[y]){
+                        File_exist=false
+                    }
+                }
+                if(File_exist){
+                    file_drag.push( dropFiles[x])
+                }
+            }
+        }, false);
+
+        
+    })
+    function deleteButton() {
+
+
+    }
+   function Sure() {
+        if(!Login){
+            tip("请先登录")
+            return false
+        }
+        /*提交表单不跳转*/
+        if (!cartoonpic_check) {
+            tip("还没有选择图片")
+            return false
+        }
+       loading("正在生成")
+        var formdata = new FormData($("#contentForm")[0]);
+       formdata.delete("file")
+       for(var x=0;x<file_drag.length;x++){
+           console.log(file_drag[x].name)
+           formdata.append("file", file_drag[x])
+       }
+       // formdata.set("file",file_drag)
+        $.ajax({
+            // headers: {
+            //     'Accept': 'application/json',
+            //     'Content-Type': 'application/json'
+            // },
+            url: "/UploadImageDemo_1",
+            type: 'post',
+            cache: false, //上传文件不需要缓存
+            async: true,
+            data: formdata,
+            processData: false, // 此处是关键：告诉jQuery去处理发送的数据
+            contentType: false, // 此处是关键：告诉jQuery不要去设置Content-Type请求头
+            success: function (data) {
+                console.log(data)
+                closeloading()
+                if(data.status=="OK"){
+                    tip("创建成功!正在为你跳转")
+                    setTimeout(function () {
+                        location.href="../Client/demo_1"
+                    },2000)
+                }else{
+                    tip("出错了,请寻找管理员")
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                closeloading()
+                tip("出错了,请寻找管理员")
+                console.log(errorThrown);
+            }
+        });
+       return false
+    }
+</script>
+<body>
+<!--头部-->
+<div id="tipword" ><!--提示框-->
+    <div style="background:
+#ffce15;border-bottom-left-radius: 0;border-bottom-right-radius: 0;"><img width="75px" src="../../static/pic/logo.png">
+    </div><br><br><br>
+
+    <div id="center_word" ></div>
+    <br>
+    <input type="button" id="sure" onclick="closetip()" value="确认"></input><br><br></div>
+<div id="tipbackground" onclick="closetip()" ></div>
+<div id="loading">
+    <div>
+        <img style="width: 100%" src="../../static/pic/loading.gif"/>
+        <label></label>
+    </div>
+</div>
+<header style="width: 100%;min-width:300px;height: 75px;background:#eeeeee;text-align: left">
+    <div style="display: inline">
+        <img id="HeaderLogo"  alt="" src="../../static/pic/logo.png"/>
+    </div>
+    <div id="LoginState" style="margin-right:10% ;width: 45px;float: right;">
+        <img style="cursor: pointer;
+position: relative;
+height: 45px;"  src="../../static/pic/login.png"/>
+        <span id="LoginMessage" >未登录</span>
+    </div>
+</header>
+
+<div id="content">
+    <form id="contentForm" enctype="multipart/form-data" onsubmit="return false">
+        <h3 style="background:#eee;height: 30px;font-size: 20px;">Demo_1制作</h3>
+        <p>特别提示：一定要看！！至少需要一张图片,每次刷新页面时会有多种不同组合</p>
+        <div id="UploadPlace" style="position: relative;padding: 30px;border: 1px dashed #e2e2e2;
+background-color:#fff;text-align: center;cursor: pointer;color:#999;">
+            <img style="width: 60px" src="../../static/pic/upload.png" />
+            <p>点击上传需要图片(此网页最少上传1张,最多不超过70张)</p>
+            <input  onchange="previewImg(this)" id="upload_input" multiple="multiple" type="file" style="display: none;" accept="image/png,image/jpeg" name="file">
+        </div>
+        <blockquote style="overflow-y:auto;max-height:350px;margin-top: 10px;border-color: #e6e6e6;border-style: solid;
+border-width: 1px 1px 1px 5px;margin-bottom: 10px;font-size: 13px;padding: 15px;
+line-height: 22px;border-left: 5px solid #009688;border-radius: 0 2px 2px 0;background: 0 0;">
+            图片预览：<br/>
+            <div>
+            </div>
+        </blockquote>
+        <button id="submit" onclick="return Sure()">提交生成</button>
+    </form>
+
+</div>
+<!--尾部-->
+<footer style="color: #c74545;
+    text-align: center;
+    float: left;
+    width: 100%;
+    background: #eeeeee;min-width: 300px;
+    height: 40px;"><span style="font-size: 15px;position: relative;top:10px;">个人网站©2020<a style="color: black;text-decoration-line:none;" href="http://beian.miit.gov.cn" target="_blank">粤ICP备20011030号</a></span></footer>
+
+</body>
+</html>
