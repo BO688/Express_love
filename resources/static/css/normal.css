@@ -1,0 +1,115 @@
+*{
+    margin: 0;
+    padding: 0;
+    font:14px Helvetica Neue,Helvetica,PingFang SC,Tahoma,Arial,sans-serif;
+}
+.button-1 {
+    font: 15px Montserrat; text-transform: uppercase;
+    background: rgb(0, 100, 0); color: white;
+    padding: 4px 20px; border-radius: 5px;
+    cursor: pointer;
+}
+.button-1:hover {background: rgb(0, 75, 0);}
+@media all and (max-width:500px) {
+    #HeaderLogo{
+        margin-left: 5%;
+    }
+}
+#HeaderLogo{
+    position: relative;height: 75px; margin-left: 15%;cursor: pointer;
+}
+#LoginMessage{
+    font-size: 14px;text-align: center;width: 45px;
+    display: inline-block;overflow: hidden;text-overflow: ellipsis;
+    cursor: pointer;
+}
+#LoginMessage:hover{
+    text-decoration-line:underline;
+    overflow: visible;
+}
+div#tipword,div#tipword div:first-of-type{
+    border-radius: 20px;
+}
+#tipword{/*提示框*/
+    text-align: center;
+    top:20%;
+    z-index: 1000000;display: none;
+    background:rgb(249, 210, 210) none repeat scroll 0% 0%;
+    opacity: 0;box-shadow: #ea7272 0px 0px 10px 1px;
+    position: fixed;
+    left: 20%;max-width: 500px;
+    right: 20%;
+    margin: 0px auto;
+    width: 60%;
+}
+#center_word{/*内容字*/
+    background:
+            #bad3ff;
+    position: relative;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 75%;
+}
+#tipbackground{/*提示背景*/
+    border-radius: 0;
+    position: fixed;display: none;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    z-index: 100000;
+    background:rgb(164, 165, 158) none repeat scroll 0% 0%;
+    top: 0;
+    left: 0;
+}
+#loading{
+    display: none;
+    background-color: rgba(180, 200, 202, 0.9);
+    background-color: #9ba6b0ed;
+    position: fixed;
+    z-index: 100;
+    width: 100%;
+    height: 100%;
+}
+#loading div{
+    text-align: center;
+    width: 150px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    margin-top: auto;
+    position: inherit;
+    top: 50%;
+    margin-top: -75px;
+}
+body{
+    height: 700px;
+}
+.scrollbar-1::-webkit-scrollbar {/*滚动条整体样式*/
+    width: 10px;     /*高宽分别对应横竖滚动条的尺寸*/
+    height: 1px;
+}
+.scrollbar-1::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+    background: #535353;
+}
+.scrollbar-1::-webkit-scrollbar-track {/*滚动条里面轨道*/
+    -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+    border-radius: 10px;
+    background: #EDEDED;
+}
+.scrollbar-2::-webkit-scrollbar {/*滚动条整体样式*/
+    width: 10px;     /*高宽分别对应横竖滚动条的尺寸*/
+    height: 1px;
+}
+.scrollbar-2::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+    border-radius: 10px;
+    background-color:  #535353;
+    background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent);
+}
+.scrollbar-2::-webkit-scrollbar-track {/*滚动条里面轨道*/
+    -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+    /*border-radius: 10px;*/
+    background: #EDEDED;
+}
